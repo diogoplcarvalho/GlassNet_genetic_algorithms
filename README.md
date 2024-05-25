@@ -17,6 +17,23 @@
 
 <p align="justify">O GlassNet é uma rede neural multitask profunda treinada com mais 218 mil exemplos de diferentes composições vítreas. O modelo tem a capacidade de prever 85 diferentes propriedades, sejam elas óticas, elétricas, dielétricas, mecânicas e térmicas em diferentes tipos de composições. O modelo foi treinado com os dados do SciGlass e está disponível no módulo Glasspy como código aberto a comunidade científica. </p>
 
+### Organização do Repositório
+<ul>
+  <li><ul>Pasta "analise_exploratoria"</li>
+    <li><b>analise_exploratoria.ipynb</b></li>
+    <p>Arquivo jupyter contendo a busca dos dados do SciGlass pelo Módulo Glasspy, análise estatística e histogramas das propriedades escolhidas. </p>
+    <li><b>prices.csv</b></li>
+    <p>Tabela contendo os preços coletados para cada composto óxidos trabalhados no algoritmo genético</p>
+</ul>
+  
+  <li><ul>Pasta "algoritmo_genetico</li>
+    <li><b>algoritmo_genetico.ipynb</b></li>
+    <p>Arquivo jupyter contendo o algoritmo genético usado para a otimização dos dados</p>
+    <li><b>funcoes.py</b></li>
+    <p>Script python contendo as funções precisas para execução do algoritmo genético. Funções essa que envolvem a criação dos candidatos, população, gene e função objetivo. </p>
+  </ul>
+</ul>
+
 ### Estratégias para o trabalaho
 <ul>
   <li>Preparação dos Dados</li>
@@ -40,12 +57,16 @@
   <li>Algoritmo Genético</li>
 </ul>
 
+### Bibliotecas e Módulos
 
 ### References:
 [1] GlassPy documentation — GlassPy latest documentation. Disponível em: <https://glasspy.readthedocs.io/en/latest/>. Acesso em: 22 maio. 2024. <br>
 [2] Sigma-Aldrich: Analytical, Biology, Chemistry & Materials Science products and services. Disponível em: <https://www.sigmaaldrich.com>. <br>
 [3] SciGlass. Disponível em: <https://www.akoscheminformatics.de/sciglass/sciglass.htm>. Acesso em: 25 maio. 2024.<br>
 [4] CASSAR, D. R. GlassNet: A multitask deep neural network for predicting many glass properties. Ceramics international, v. 49, n. 22, p. 36013–36024, 1 nov. 2023.<br>
+[5] WIKIPEDIA CONTRIBUTORS. Young’s modulus. Disponível em: <https://en.wikipedia.org/wiki/Young%27s_modulus>.
+[6] CASSAR, D. R. drcassar/glasspy. Disponível em: <https://github.com/drcassar/glasspy>. Acesso em: 25 maio. 2024.
+
 
 ‌
 
