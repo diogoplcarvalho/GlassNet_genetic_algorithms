@@ -219,10 +219,10 @@ def mutacao_sucessiva(populacao, chance_de_mutacao, chance_mutacao_gene, valor_m
                     sera_maior = random.randint(0, 1)
                     if sera_maior:
                         possivel_valor_gene = valor_gene + random.randint(0, 10)
-                        individuo[gene] = possivel_valor_gene if possivel_valor_gene >= valor_max else valor_max
+                        individuo[gene] = possivel_valor_gene if possivel_valor_gene <= valor_max else valor_max
                     else: 
                         possivel_valor_gene = valor_gene - random.randint(0, 10)
-                        individuo[gene] = possivel_valor_gene if possivel_valor_gene <= 0 else 0
+                        individuo[gene] = possivel_valor_gene if possivel_valor_gene >= 0 else 0
 
 
 def mutacao_simples(populacao, chance_de_mutacao, valor_max):
@@ -242,7 +242,7 @@ def mutacao_simples(populacao, chance_de_mutacao, valor_max):
             sera_maior = random.randint(0, 1)
             if sera_maior:
                 possivel_valor_gene = valor_gene + random.randint(0, 10)
-                individuo[gene] = possivel_valor_gene if possivel_valor_gene >= valor_max else valor_max
+                individuo[gene] = possivel_valor_gene if possivel_valor_gene <= valor_max else valor_max
             else: 
                 possivel_valor_gene = valor_gene - random.randint(0, 10)
-                individuo[gene] = possivel_valor_gene if possivel_valor_gene <= 0 else 0
+                individuo[gene] = possivel_valor_gene if possivel_valor_gene >= 0 else 0
