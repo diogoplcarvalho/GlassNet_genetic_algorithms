@@ -7,47 +7,53 @@ model = GlassNet()
 #                                  COMPOSTOS                                  #
 ###############################################################################
 
-def gene_cnb(valor_max):
-    """Sorteia um valor para uma caixa no problema das caixas não-binárias"""
+def gene(valor_max):
+    """Sorteia um valor para um composto óxido para a composição de vidro.
+    
+    Args:
+      valor_max: inteiro represtando o valor máximo do composto.
+    
+    """
     valores_possiveis = range(valor_max + 1)
     gene = random.choice(valores_possiveis)
     return gene
 
 
-def cria_candidato_cnb(n, valor_max):
-    """Cria uma lista com n valores entre zero e valor_max.
+def cria_candidato(n, valor_max):
+    """Cria uma lista de compostos de uma composição de vidro com n valores entre zero e valor_max.
 
     Args:
-      n: inteiro que representa o número de caixas.
-      valor_max: inteiro represtando o valor máximo das caixas
+      n: inteiro que representa o número de compostos.
+      valor_max: inteiro represtando o valor máximo de um composto.
+
     """
     candidato = []
     for _ in range(n):
-        gene = gene_cnb(valor_max)
+        gene = gene(valor_max)
         candidato.append(gene)
     return candidato
 
 
-def populacao_cnb(tamanho, n, valor_max):
-    """Cria uma população para o problema das caixas não-binárias.
+def populacao(tamanho, n, valor_max):
+    """Cria uma população para o problema de possíveis composições de vidro.
 
     Args:
       tamanho: tamanho da população
-      n: inteiro que representa o número de caixas de cada indivíduo.
-      valor_max: inteiro represtando o valor máximo das caixas
+      n: inteiro que representa o número de compostos.
+      valor_max: inteiro represtando o valor máximo de um composto.
 
     """
     populacao = []
     for _ in range(tamanho):
-        populacao.append(cria_candidato_cnb(n, valor_max))
+        populacao.append(cria_candidato(n, valor_max))
     return populacao
 
 
-def funcao_objetivo_cnb(candidato, compostos, modelo):
-    """Computa a função objetivo no problema das caixas não-binárias
+def funcao_objetivo(candidato, compostos, modelo):
+    """Computa a função objetivo no problema.
 
     Args:
-      candidato: uma lista contendo os valores das caixas não-binárias do problema
+      candidato: uma lista contendo os valores dos compostos de uma composição de vidro do problema.
 
     """
     dict_composicao = dict(zip(compostos, candidato))
@@ -56,16 +62,16 @@ def funcao_objetivo_cnb(candidato, compostos, modelo):
     return float(predicao['Density293K'].iloc[0])
 
 
-def funcao_objetivo_pop_cnb(populacao, compostos, modelo):
-    """Computa a função objetivo para uma população no problema das caixas não-binárias
+def funcao_objetivo_pop(populacao, compostos, modelo):
+    """Computa a função objetivo para uma população no problema.
 
     Args:
-      populacao: lista contendo os individuos do problema
+      populacao: lista contendo os individuos do problema.
 
     """
     fitness = []
     for individuo in populacao:
-        fitness.append(funcao_objetivo_cnb(individuo, compostos, modelo))
+        fitness.append(funcao_objetivo(individuo, compostos, modelo))
     return fitness
 
 
@@ -75,11 +81,11 @@ def funcao_objetivo_pop_cnb(populacao, compostos, modelo):
 
 
 def selecao_roleta_max(populacao, fitness):
-    """Realiza seleção da população pela roleta
+    """Realiza seleção da população pela roleta.
 
     Args:
-      populacao: lista contendo os individuos do problema
-      fitness: lista contendo os valores computados da funcao objetivo
+      populacao: lista contendo os individuos do problema.
+      fitness: lista contendo os valores computados da funcao objetivo.
 
     """
     selecionados = random.choices(populacao, fitness, k=len(populacao))
@@ -87,15 +93,12 @@ def selecao_roleta_max(populacao, fitness):
 
 
 def selecao_torneio_max(populacao, fitness, tamanho_torneio):
-    """Faz a seleção de uma população usando torneio.
-
-    Nota: da forma que está implementada, só funciona em problemas de
-    maximização.
+    """Faz a seleção por maximização de uma população usando torneio.
 
     Args:
-      populacao: lista contendo os individuos do problema
-      fitness: lista contendo os valores computados da funcao objetivo
-      tamanho_torneio: quantidade de invíduos que batalham entre si
+      populacao: lista contendo os individuos do problema.
+      fitness: lista contendo os valores computados da funcao objetivo.
+      tamanho_torneio: quantidade de invíduos que batalham entre si.
 
     """
     selecionados = []
@@ -123,14 +126,14 @@ def selecao_torneio_max(populacao, fitness, tamanho_torneio):
 
 
 def cruzamento_ponto_duplo(pai, mae, chance_de_cruzamento):
-    """Realiza cruzamento de ponto duplo
+    """Realiza cruzamento de ponto duplo.
 
     Args:
-      pai: lista representando um individuo
-      mae: lista representando um individuo
-      chance_de_cruzamento: float entre 0 e 1 representando a chance de cruzamento
-
+      pai: lista representando um individuo.
+      mae: lista representando um individuo.
+      chance_de_cruzamento: float entre 0 e 1 representando a chance de cruzamento.
     """
+
     if random.random() < chance_de_cruzamento:
         corte1 = random.randint(1, len(mae) - 2)
         corte2 = random.randint(corte1 + 1, len(mae) - 1)
@@ -142,15 +145,44 @@ def cruzamento_ponto_duplo(pai, mae, chance_de_cruzamento):
 
 
 def cruzamento_ponto_simples(pai, mae, chance_de_cruzamento):
-    """Realiza cruzamento de ponto simples
+    """Realiza cruzamento de ponto simples.
 
     Args:
-      pai: lista representando um individuo
-      mae: lista representando um individuo
+      pai: lista representando um individuo.
+      mae: lista representando um individuo.
+      chance_de_cruzamento: float entre 0 e 1 representando a chance de cruzamento.
+    """
+
+    if random.random() < chance_de_cruzamento:
+        corte = random.randint(1, len(mae) - 1)
+        filho1 = pai[:corte] + mae[corte:]
+        filho2 = mae[:corte] + pai[corte:]
+        return filho1, filho2
+    else:
+        return pai, mae
+
+
+def cruzamento_ponto_simples_e_duplo(pai, mae, chance_de_cruzamento):
+    """Realiza cruzamento de ponto simples.
+
+    Args:
+      pai: lista representando um individuo.
+      mae: lista representando um individuo.
       chance_de_cruzamento: float entre 0 e 1 representando a chance de cruzamento
 
     """
-    if random.random() < chance_de_cruzamento:
+
+    chance_de_cruzamento_duplo = (1 - chance_de_cruzamento)/2
+    chance_de_cruzamento_simples = (1 - chance_de_cruzamento)/2
+    chance_aleatoria = random.random()
+
+    if chance_aleatoria < chance_de_cruzamento_duplo:
+        corte1 = random.randint(1, len(mae) - 2)
+        corte2 = random.randint(corte1 + 1, len(mae) - 1)
+        filho1 = pai[:corte1] + mae[corte1:corte2] + pai[corte2:]
+        filho2 = mae[:corte1] + pai[corte1:corte2] + mae[corte2:]
+        return filho1, filho2
+    elif chance_aleatoria > chance_de_cruzamento_duplo and chance_aleatoria <= chance_de_cruzamento_simples:
         corte = random.randint(1, len(mae) - 1)
         filho1 = pai[:corte] + mae[corte:]
         filho2 = mae[:corte] + pai[corte:]
@@ -163,72 +195,46 @@ def cruzamento_ponto_simples(pai, mae, chance_de_cruzamento):
 #                                   Mutação                                   #
 ###############################################################################
 
-
-def mutacao_simples_cb(populacao, chance_de_mutacao):
-    """Realiza mutação simples no problema das caixas binárias
+def mutacao_sucessiva(populacao, chance_de_mutacao, chance_mutacao_gene, valor_max):
+    """Realiza mutação sucessiva no problema.
 
     Args:
-      populacao: lista contendo os indivíduos do problema
-      chance_de_mutacao: float entre 0 e 1 representando a chance de mutação
+      populacao: lista contendo os indivíduos do problema.
+      chance_de_mutacao: float entre 0 e 1 representando a chance de mutação.
+      chance_mutacao_gene: float entre 0 e 1 representando a chance de mutação de cada gene.
 
     """
     for individuo in populacao:
-        if random.random() < chance_de_mutacao:
-            gene = random.randint(0, len(individuo) - 1)
-            individuo[gene] = 0 if individuo[gene] == 1 else 1
-
-
-def mutacao_sucessiva_cb(populacao, chance_de_mutacao, chance_mutacao_gene):
-    """Realiza mutação simples no problema das caixas binárias
-
-    Args:
-      populacao: lista contendo os indivíduos do problema
-      chance_de_mutacao: float entre 0 e 1 representando a chance de mutação
-      chance_mutacao_gene: float entre 0 e 1 representando a chance de mutação de cada gene
-
-    """
-    for individuo in populacao:
-        if random.random() < chance_de_mutacao:
+        if random.random() / 2 < chance_de_mutacao:
             for gene in range(len(individuo)):
                 if random.random() < chance_mutacao_gene:
-                    individuo[gene] = 0 if individuo[gene] == 1 else 1
+                    valor_gene = individuo[gene]
+                    sera_maior = random.randint(0, 1)
+                    if sera_maior:
+                        possivel_valor_gene = valor_gene + random.randint(0, 10)
+                        individuo[gene] = possivel_valor_gene if possivel_valor_gene >= valor_max else valor_max
+                    else: 
+                        possivel_valor_gene = valor_gene - random.randint(0, 10)
+                        individuo[gene] = possivel_valor_gene if possivel_valor_gene <= 0 else 0
 
 
-def mutacao_simples_cnb(populacao, chance_de_mutacao, valor_max):
-    """Realiza mutação simples no problema das caixas não-binárias
+def mutacao_simples(populacao, chance_de_mutacao, valor_max):
+    """Realiza mutação simples no problema.
 
     Args:
-      populacao: lista contendo os indivíduos do problema
-      chance_de_mutacao: float entre 0 e 1 representando a chance de mutação
-      valor_max: inteiro represtando o valor máximo das caixas
+      populacao: lista contendo os indivíduos do problema.
+      chance_de_mutacao: float entre 0 e 1 representando a chance de mutação.
+      valor_max: inteiro represtando o valor máximo de um composto.
 
     """
     for individuo in populacao:
         if random.random() < chance_de_mutacao:
             gene = random.randint(0, len(individuo) - 1)
             valor_gene = individuo[gene]
-            valores_possiveis = list(range(valor_max + 1))
-            valores_possiveis.remove(valor_gene)
-            individuo[gene] = random.choice(valores_possiveis)
-
-
-def mutacao_sucessiva_cnb(
-    populacao, chance_de_mutacao, chance_mutacao_gene, valor_max
-):
-    """Realiza mutação simples no problema das caixas não-binárias
-
-    Args:
-      populacao: lista contendo os indivíduos do problema
-      chance_de_mutacao: float entre 0 e 1 representando a chance de mutação
-      chance_mutacao_gene: float entre 0 e 1 representando a chance de mutação de cada gene
-      valor_max: inteiro represtando o valor máximo das caixas
-
-    """
-    for individuo in populacao:
-        if random.random() < chance_de_mutacao:
-            for gene in range(len(individuo)):
-                if random.random() < chance_mutacao_gene:
-                    valores_possiveis = list(range(valor_max + 1))
-                    valor_gene = individuo[gene]
-                    valores_possiveis.remove(valor_gene)
-                    individuo[gene] = random.choice(valores_possiveis)
+            sera_maior = random.randint(0, 1)
+            if sera_maior:
+                possivel_valor_gene = valor_gene + random.randint(0, 10)
+                individuo[gene] = possivel_valor_gene if possivel_valor_gene >= valor_max else valor_max
+            else: 
+                possivel_valor_gene = valor_gene - random.randint(0, 10)
+                individuo[gene] = possivel_valor_gene if possivel_valor_gene <= 0 else 0
