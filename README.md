@@ -43,9 +43,9 @@
 
 ### References:
 [1] GlassPy documentation — GlassPy latest documentation. Disponível em: <https://glasspy.readthedocs.io/en/latest/>. Acesso em: 22 maio. 2024. <br>
-[2] Sigma-Aldrich: Analytical, Biology, Chemistry & Materials Science products and services. Disponível em: <https://www.sigmaaldrich.com>.
-[3] SciGlass. Disponível em: <https://www.akoscheminformatics.de/sciglass/sciglass.htm>. Acesso em: 25 maio. 2024.
-[4] CASSAR, D. R. GlassNet: A multitask deep neural network for predicting many glass properties. Ceramics international, v. 49, n. 22, p. 36013–36024, 1 nov. 2023.
+[2] Sigma-Aldrich: Analytical, Biology, Chemistry & Materials Science products and services. Disponível em: <https://www.sigmaaldrich.com>. <br>
+[3] SciGlass. Disponível em: <https://www.akoscheminformatics.de/sciglass/sciglass.htm>. Acesso em: 25 maio. 2024.<br>
+[4] CASSAR, D. R. GlassNet: A multitask deep neural network for predicting many glass properties. Ceramics international, v. 49, n. 22, p. 36013–36024, 1 nov. 2023.<br>
 
 ‌
 
