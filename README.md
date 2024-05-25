@@ -13,7 +13,7 @@
 
 ### Sobre o Dataset e o Modelo Preditivo
 
-<p align="justify">A base de dados utilizada nesse trabalho é o “SciGlass”[3], o SciGlass é um banco de dados abrangente de propriedades de vidros, projetado para auxiliar na pesquisa e desenvolvimento de novos tipos de vidros. A database SciGlass 7.7 possui dados de mais de 300 mil composições, incluindo óxidos, halogenetos e calcogenetos. Para acessarmos essa grande base de dados, utilizamos o módulo GlassPy [4] como intermediador. Glasspy é um módulo em python também voltado a pesquisas relacionadas a materiais vítreos. O glasspy oferece um método conveniente para carregar dados do SciGlass em um dataframe do tipo Pandas. O GlassPy também abarca o GlassNet [5], que é um modelo preditivo para várias propriedades de vidros.</p>
+<p align="justify">A base de dados utilizada nesse trabalho é o “SciGlass”[3], o SciGlass é um banco de dados abrangente de propriedades de vidros, projetado para auxiliar na pesquisa e desenvolvimento de novos tipos de vidros. A database SciGlass 7.7 possui dados de mais de 300 mil composições, incluindo óxidos, halogenetos e calcogenetos. Para acessarmos essa grande base de dados, utilizamos o módulo GlassPy [1] como intermediador. Glasspy é um módulo em python também voltado a pesquisas relacionadas a materiais vítreos. O glasspy oferece um método conveniente para carregar dados do SciGlass em um dataframe do tipo Pandas. O GlassPy também abarca o GlassNet [4], que é um modelo preditivo para várias propriedades de vidros.</p>
 
 <p align="justify">O GlassNet é uma rede neural multitask profunda treinada com mais 218 mil exemplos de diferentes composições vítreas. O modelo tem a capacidade de prever 85 diferentes propriedades, sejam elas óticas, elétricas, dielétricas, mecânicas e térmicas em diferentes tipos de composições. O modelo foi treinado com os dados do SciGlass e está disponível no módulo Glasspy como código aberto a comunidade científica. </p>
 
@@ -44,5 +44,9 @@
 ### References:
 [1] GlassPy documentation — GlassPy latest documentation. Disponível em: <https://glasspy.readthedocs.io/en/latest/>. Acesso em: 22 maio. 2024. <br>
 [2] Sigma-Aldrich: Analytical, Biology, Chemistry & Materials Science products and services. Disponível em: <https://www.sigmaaldrich.com>.
+[3] SciGlass. Disponível em: <https://www.akoscheminformatics.de/sciglass/sciglass.htm>. Acesso em: 25 maio. 2024.
+[4] CASSAR, D. R. GlassNet: A multitask deep neural network for predicting many glass properties. Ceramics international, v. 49, n. 22, p. 36013–36024, 1 nov. 2023.
+
+‌
 
 ‌
