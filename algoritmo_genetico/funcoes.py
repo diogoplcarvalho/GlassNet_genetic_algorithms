@@ -7,13 +7,14 @@ model = GlassNet()
 #                                  COMPOSTOS                                  #
 ###############################################################################
 
-def gene(valor_max):
+def cria_gene(valor_max):
     """Sorteia um valor para um composto óxido para a composição de vidro.
     
     Args:
       valor_max: inteiro represtando o valor máximo do composto.
     
     """
+
     valores_possiveis = range(valor_max + 1)
     gene = random.choice(valores_possiveis)
     return gene
@@ -27,14 +28,15 @@ def cria_candidato(n, valor_max):
       valor_max: inteiro represtando o valor máximo de um composto.
 
     """
+    
     candidato = []
     for _ in range(n):
-        gene = gene(valor_max)
+        gene = cria_gene(valor_max)
         candidato.append(gene)
     return candidato
 
 
-def populacao(tamanho, n, valor_max):
+def cria_populacao_compostos(tamanho, n, valor_max):
     """Cria uma população para o problema de possíveis composições de vidro.
 
     Args:
@@ -43,6 +45,7 @@ def populacao(tamanho, n, valor_max):
       valor_max: inteiro represtando o valor máximo de um composto.
 
     """
+
     populacao = []
     for _ in range(tamanho):
         populacao.append(cria_candidato(n, valor_max))
@@ -56,6 +59,7 @@ def funcao_objetivo(candidato, compostos, modelo):
       candidato: uma lista contendo os valores dos compostos de uma composição de vidro do problema.
 
     """
+
     dict_composicao = dict(zip(compostos, candidato))
     predicao = modelo.predict(dict_composicao)
 
@@ -88,6 +92,7 @@ def selecao_roleta_max(populacao, fitness):
       fitness: lista contendo os valores computados da funcao objetivo.
 
     """
+
     selecionados = random.choices(populacao, fitness, k=len(populacao))
     return selecionados
 
@@ -101,6 +106,7 @@ def selecao_torneio_max(populacao, fitness, tamanho_torneio):
       tamanho_torneio: quantidade de invíduos que batalham entre si.
 
     """
+
     selecionados = []
 
     for _ in range(len(populacao)):
@@ -204,6 +210,7 @@ def mutacao_sucessiva(populacao, chance_de_mutacao, chance_mutacao_gene, valor_m
       chance_mutacao_gene: float entre 0 e 1 representando a chance de mutação de cada gene.
 
     """
+
     for individuo in populacao:
         if random.random() / 2 < chance_de_mutacao:
             for gene in range(len(individuo)):
@@ -227,6 +234,7 @@ def mutacao_simples(populacao, chance_de_mutacao, valor_max):
       valor_max: inteiro represtando o valor máximo de um composto.
 
     """
+    
     for individuo in populacao:
         if random.random() < chance_de_mutacao:
             gene = random.randint(0, len(individuo) - 1)
