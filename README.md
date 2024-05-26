@@ -20,17 +20,14 @@
 ### Organização do Repositório
 <ul>
   <li><ul>Pasta "analise_exploratoria"</li>
-    <li><b>analise_exploratoria.ipynb</b></li>
-    <p>Arquivo jupyter contendo a busca dos dados do SciGlass pelo Módulo Glasspy, análise estatística e histogramas das propriedades escolhidas. </p>
-    <li><b>prices.csv</b></li>
-    <p>Tabela contendo os preços coletados para cada composto óxidos trabalhados no algoritmo genético</p>
-</ul>
+    <li><b>analise_exploratoria.ipynb</b>: Arquivo jupyter contendo a busca dos dados do SciGlass pelo Módulo Glasspy, análise estatística e histogramas das propriedades escolhidas.</li>
+    <li><b>prices.csv</b>: Tabela contendo os preços coletados para cada composto óxidos trabalhados no algoritmo genético</li>
+    
+</ul> <br>
   
   <li><ul>Pasta "algoritmo_genetico</li>
-    <li><b>algoritmo_genetico.ipynb</b></li>
-    <p>Arquivo jupyter contendo o algoritmo genético usado para a otimização dos dados</p>
-    <li><b>funcoes.py</b></li>
-    <p>Script python contendo as funções precisas para execução do algoritmo genético. Funções essa que envolvem a criação dos candidatos, população, gene e função objetivo. </p>
+    <li><b>algoritmo_genetico.ipynb</b>: Arquivo jupyter contendo o algoritmo genético usado para a otimização dos dados</li>
+    <li><b>funcoes.py</b>: Script python contendo as funções precisas para execução do algoritmo genético. Funções essas que envolvem a criação dos candidatos, população, gene, função objetivo, funções relacionadas as etapas de cruzamento e mutação.</li>
   </ul>
 </ul>
 
@@ -58,6 +55,18 @@
 </ul>
 
 ### Bibliotecas e Módulos
+Nessa etapa, informamos as bibliotecas e módulos utilizados no desenvolvimento do projeto e seu uso nesse projeto. Essas ferramentas vão desde a etapa da análise estatística e visualização dos dados até a otimização de funções no código fonte.
+
+<ul>
+  <li><b>Pandas</b>: Biblioteca utilizada para visualização dos dados brutos obtidos do SciGlass e Análise estatística dos mesmos.</li>
+  <li><b>Glasspy</b>: Módulo que serviu como intermediador entre o projeto e a base de dados alvo (SciGlass), além de ofercer acesso ao modelo preditivo do GlassNet</li>
+  <li><b>GlassNet</b>: Modelo preditivo (Rede Neural Multitask) utilzada para prever as propriedades do material com base na composição informada</li>
+  <li><b>SciGlass</b>: Base de dados contendo mais de 300 mil composições de materiais vítreos</li> 
+  <li><b>Matplotlib</b>: Biblioteca utilizada para o plot dos gráficos presentes no projeto (histogramas)</li>
+  <li><b>Numpy</b>: Biblioetca especializada em trabalhar com arrays multidimensionais e matrizes</li>
+  <li><b>Seaborn</b>: Biblioteca de visualização de dados construida com base no Matplotlib. Utilizada para estilização dos gráficos do projeto</li>
+  
+</ul>
 
 ### References:
 [1] GlassPy documentation — GlassPy latest documentation. Disponível em: <https://glasspy.readthedocs.io/en/latest/>. Acesso em: 22 maio. 2024. <br>
