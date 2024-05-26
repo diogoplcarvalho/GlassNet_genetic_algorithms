@@ -86,9 +86,10 @@ def funcao_objetivo(candidato, lista_de_compostos, lista_de_precos, modelo):
     modulo_young = float(predicao['YoungModulus'].iloc[0])
     microdureza = float(predicao['Microhardness'].iloc[0])
     preco = preco_composicao(candidato, lista_de_precos)
+    compostos_nao_usados = candidato.count(0)
 
-    pontuacao = abs((modulo_young/ 85.7) - 1 + (microdureza/5.8) - 1 + (preco/0.72) - 1)
-    # pontuacao = (((modulo_young/ 85.7) - 1) ** 2 + ((microdureza/5.8) - 1) ** 2 + ((preco/0.72) - 1) ** 2) ** (1/2)
+    #pontuacao = abs((modulo_young/ 85.7) - 1 + (microdureza/5.8) - 1 + (preco/0.72) - 1)
+    pontuacao = (((modulo_young/ 85.7) - 1) ** 2 + ((microdureza/5.8) - 1) ** 2 + ((preco/0.72) - 1) ** 2) ** (1/2) / (compostos_nao_usados + 1)
 
     return pontuacao
 
