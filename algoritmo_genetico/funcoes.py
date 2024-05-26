@@ -1,10 +1,31 @@
 import random
+import numpy as np
 from glasspy.predict import GlassNet
 
 model = GlassNet()
 
 ###############################################################################
-#                                  COMPOSTOS                                  #
+#                               Funções Básicas                               #
+###############################################################################
+
+
+def preco_composicao(candidato, lista_de_precos):
+    """Define o preço de um candidato.
+    
+    Args:
+      candidato = uma lista contendo os valores dos compostos utilizados em uma composição de vidro do problema.
+      lista_de_precos = uma lista contendo os precos dos compostos do candidato.
+    """
+
+    candidato = np.array(candidato)
+    candidato_grama = candidato/sum(candidato) 
+    preco = sum(candidato_grama * np.array(lista_de_precos))
+
+    return preco
+
+
+###############################################################################
+#                                  Compostos                                  #
 ###############################################################################
 
 def cria_gene(valor_max):
@@ -12,7 +33,6 @@ def cria_gene(valor_max):
     
     Args:
       valor_max: inteiro represtando o valor máximo do composto.
-    
     """
 
     valores_possiveis = range(valor_max + 1)
@@ -26,7 +46,6 @@ def cria_candidato(n, valor_max):
     Args:
       n: inteiro que representa o número de compostos.
       valor_max: inteiro represtando o valor máximo de um composto.
-
     """
     
     candidato = []
@@ -43,7 +62,6 @@ def cria_populacao_compostos(tamanho, n, valor_max):
       tamanho: tamanho da população
       n: inteiro que representa o número de compostos.
       valor_max: inteiro represtando o valor máximo de um composto.
-
     """
 
     populacao = []
@@ -52,30 +70,42 @@ def cria_populacao_compostos(tamanho, n, valor_max):
     return populacao
 
 
-def funcao_objetivo(candidato, compostos, modelo):
+def funcao_objetivo(candidato, lista_de_compostos, lista_de_precos, modelo):
     """Computa a função objetivo no problema.
 
     Args:
       candidato: uma lista contendo os valores dos compostos de uma composição de vidro do problema.
-
+      lista_de_compostos = uma lista contendo os compostos utilizáveos pelo candidato.
+      lista_de_precos = uma lista contendo os precos dos compostos do candidato.
+      modelo = um modelo de predição de propriedades de vidro a partir de sua composição.
     """
-
-    dict_composicao = dict(zip(compostos, candidato))
+    
+    dict_composicao = dict(zip(lista_de_compostos, candidato))
     predicao = modelo.predict(dict_composicao)
 
-    return float(predicao['Density293K'].iloc[0])
+    modulo_young = float(predicao['YoungModulus'].iloc[0])
+    microdureza = float(predicao['Microhardness'].iloc[0])
+    preco = preco_composicao(candidato, lista_de_precos)
+
+    pontuacao = abs((modulo_young/ 85.7) - 1 + (microdureza/5.8) - 1 + (preco/0.72) - 1)
+    # pontuacao = (((modulo_young/ 85.7) - 1) ** 2 + ((microdureza/5.8) - 1) ** 2 + ((preco/0.72) - 1) ** 2) ** (1/2)
+
+    return pontuacao
 
 
-def funcao_objetivo_pop(populacao, compostos, modelo):
+def funcao_objetivo_pop(populacao, lista_de_compostos, lista_de_precos, modelo):
     """Computa a função objetivo para uma população no problema.
 
     Args:
-      populacao: lista contendo os individuos do problema.
-
+      candidato: uma lista contendo os valores dos compostos de uma composição de vidro do problema.
+      lista_de_compostos = uma lista contendo os compostos utilizáveos pelo candidato.
+      lista_de_precos = uma lista contendo os precos dos compostos do candidato.
+      modelo = um modelo de predição de propriedades de vidro a partir de sua composição.
     """
+
     fitness = []
     for individuo in populacao:
-        fitness.append(funcao_objetivo(individuo, compostos, modelo))
+        fitness.append(funcao_objetivo(individuo, lista_de_compostos, lista_de_precos, modelo))
     return fitness
 
 
@@ -90,21 +120,19 @@ def selecao_roleta_max(populacao, fitness):
     Args:
       populacao: lista contendo os individuos do problema.
       fitness: lista contendo os valores computados da funcao objetivo.
-
     """
 
     selecionados = random.choices(populacao, fitness, k=len(populacao))
     return selecionados
 
 
-def selecao_torneio_max(populacao, fitness, tamanho_torneio):
-    """Faz a seleção por maximização de uma população usando torneio.
+def selecao_torneio_min(populacao, fitness, tamanho_torneio):
+    """Faz a seleção por minimização de uma população usando torneio.
 
     Args:
       populacao: lista contendo os individuos do problema.
       fitness: lista contendo os valores computados da funcao objetivo.
       tamanho_torneio: quantidade de invíduos que batalham entre si.
-
     """
 
     selecionados = []
@@ -117,9 +145,9 @@ def selecao_torneio_max(populacao, fitness, tamanho_torneio):
             indice_individuo = populacao.index(individuo)
             fitness_sorteados.append(fitness[indice_individuo])
 
-        max_fitness = max(fitness_sorteados)
-        indice_max_fitness = fitness_sorteados.index(max_fitness)
-        individuo_selecionado = sorteados[indice_max_fitness]
+        min_fitness = min(fitness_sorteados)
+        indice_min_fitness = fitness_sorteados.index(min_fitness)
+        individuo_selecionado = sorteados[indice_min_fitness]
 
         selecionados.append(individuo_selecionado)
 
@@ -175,7 +203,6 @@ def cruzamento_ponto_simples_e_duplo(pai, mae, chance_de_cruzamento):
       pai: lista representando um individuo.
       mae: lista representando um individuo.
       chance_de_cruzamento: float entre 0 e 1 representando a chance de cruzamento
-
     """
 
     chance_de_cruzamento_duplo = (1 - chance_de_cruzamento)/2
@@ -208,7 +235,6 @@ def mutacao_sucessiva(populacao, chance_de_mutacao, chance_mutacao_gene, valor_m
       populacao: lista contendo os indivíduos do problema.
       chance_de_mutacao: float entre 0 e 1 representando a chance de mutação.
       chance_mutacao_gene: float entre 0 e 1 representando a chance de mutação de cada gene.
-
     """
 
     for individuo in populacao:
@@ -232,7 +258,6 @@ def mutacao_simples(populacao, chance_de_mutacao, valor_max):
       populacao: lista contendo os indivíduos do problema.
       chance_de_mutacao: float entre 0 e 1 representando a chance de mutação.
       valor_max: inteiro represtando o valor máximo de um composto.
-
     """
     
     for individuo in populacao:
