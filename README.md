@@ -1,4 +1,4 @@
-# Algoritmos Genéticos: Trabalho final
+# Algoritmos Genéticos: Otimização de vidros a prova de bala
 
 ## Equipe: Diogo P. de L. Carvalho, José D. A. Sales e Mayllon E. P. S. Silva
 
@@ -17,19 +17,26 @@
 
 <p align="justify">O GlassNet é uma rede neural multitask profunda treinada com mais 218 mil exemplos de diferentes composições vítreas. O modelo tem a capacidade de prever 85 diferentes propriedades, sejam elas óticas, elétricas, dielétricas, mecânicas e térmicas em diferentes tipos de composições. O modelo foi treinado com os dados do SciGlass e está disponível no módulo Glasspy como código aberto a comunidade científica. </p>
 
-### Organização do Repositório
+### Recomendação de Leitura
+Considerando que o objetivo principal e os dados (parte fundamental do projeto) são apresentados no arquivo de análise exploratória, enquanto conceitos mais aprofundados em Algoritmos genéticos são explanados no arquivo de mesmo nome. Com isso, ao leitor do projeto, recomenda-se seguir a seguinte ordem de leitura de arquivos
 <ul>
-  <li><ul>Pasta "analise_exploratoria"</li>
+  <li>analise_exploratoria.ipynb</li>
+  <li>algoritmo_genetico.ipynb</li>
+</ul>
+
+### Organização do Repositório
+* Pasta "analise_exploratoria"
+  <ul>
     <li><b>analise_exploratoria.ipynb</b>: Arquivo jupyter contendo a busca dos dados do SciGlass pelo Módulo Glasspy, análise estatística e histogramas das propriedades escolhidas.</li>
     <li><b>prices.csv</b>: Tabela contendo os preços coletados para cada composto óxidos trabalhados no algoritmo genético</li>
-    
-</ul> <br>
+  </ul> <br>
   
-  <li><ul>Pasta "algoritmo_genetico</li>
+* Pasta "algoritmo_genetico
+<ul>
+  <ul>
     <li><b>algoritmo_genetico.ipynb</b>: Arquivo jupyter contendo o algoritmo genético usado para a otimização dos dados</li>
     <li><b>funcoes.py</b>: Script python contendo as funções precisas para execução do algoritmo genético. Funções essas que envolvem a criação dos candidatos, população, gene, função objetivo, funções relacionadas as etapas de cruzamento e mutação.</li>
-  </ul>
-</ul>
+  </ul> </ul>
 
 ### Estratégias para o trabalaho
 <ul>
@@ -68,13 +75,26 @@ Nessa etapa, informamos as bibliotecas e módulos utilizados no desenvolvimento 
   
 </ul>
 
+### Perspectivas Futuras
+* Deseja-se em um futuro próximo, realizar um estudo mais aprofundado sobre a composição de vidros a prova de bala e implementar o algoritmo para considerar mais propriedades importantes que influenciem nessa composição alvo.
+* Extrapolar o projeto para a melhoria não apenas de vidros a prova de bala, mas também para a melhoria de vidros utilizados em aeronaves, com o objetivo de minimização do peso e preço do composto.
+
 ### References:
 [1] GlassPy documentation — GlassPy latest documentation. Disponível em: <https://glasspy.readthedocs.io/en/latest/>. Acesso em: 22 maio. 2024. <br>
+
 [2] Sigma-Aldrich: Analytical, Biology, Chemistry & Materials Science products and services. Disponível em: <https://www.sigmaaldrich.com>. <br>
+
 [3] SciGlass. Disponível em: <https://www.akoscheminformatics.de/sciglass/sciglass.htm>. Acesso em: 25 maio. 2024.<br>
+
 [4] CASSAR, D. R. GlassNet: A multitask deep neural network for predicting many glass properties. Ceramics international, v. 49, n. 22, p. 36013–36024, 1 nov. 2023.<br>
+
 [5] WIKIPEDIA CONTRIBUTORS. Young’s modulus. Disponível em: <https://en.wikipedia.org/wiki/Young%27s_modulus>. <br>
+
 [6] CASSAR, D. R. drcassar/glasspy. Disponível em: <https://github.com/drcassar/glasspy>. Acesso em: 25 maio. 2024. <br>
+
+[7] Cassar, Daniel(2024). ATP-303 GA 2.1 - Algoritmo genético. Retirado dos arquivos de Redes Neurais e Algoritimos Genéticos da Ilum - Escola de Ciência.<br>
+
+[8] Cassar, Daniel(2024). ATP-303 GA 3.1 - Caixas não-binárias. Retirado dos arquivos de Redes Neurais e Algoritimos Genéticos da Ilum - Escola de Ciência. <br>
 
 
 ‌
