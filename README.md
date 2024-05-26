@@ -17,6 +17,13 @@
 
 <p align="justify">O GlassNet é uma rede neural multitask profunda treinada com mais 218 mil exemplos de diferentes composições vítreas. O modelo tem a capacidade de prever 85 diferentes propriedades, sejam elas óticas, elétricas, dielétricas, mecânicas e térmicas em diferentes tipos de composições. O modelo foi treinado com os dados do SciGlass e está disponível no módulo Glasspy como código aberto a comunidade científica. </p>
 
+### Recomendação de Leitura
+Considerando que o objetivo principal e os dados (parte fundamental do projeto) são apresentados no arquivo de análise exploratória, enquanto conceitos mais aprofundados em Algoritmos genéticos são explanados no arquivo de mesmo nome. Com isso, ao leitor do projeto, recomenda-se seguir a seguinte ordem de leitura de arquivos
+<ul>
+  <li>analise_exploratoria.ipynb</li>
+  <li>algoritmo_genetico.ipynb</li>
+</ul>
+
 ### Organização do Repositório
 <ul>
   <li><ul>Pasta "analise_exploratoria"</li>
@@ -68,12 +75,21 @@ Nessa etapa, informamos as bibliotecas e módulos utilizados no desenvolvimento 
   
 </ul>
 
+### Perspectivas Futuras
+* Deseja-se em um futuro próximo, realizar um estudo mais aprofundado sobre a composição de vidros a prova de bala e implementar o algoritmo para considerar mais propriedades importantes que influenciem nessa composição alvo.
+* Extrapolar o projeto para a melhoria não apenas de vidros a prova de bala, mas também para a melhoria de vidros utilizados em aeronaves, com o objetivo de minimização do peso preço do composto.
+
 ### References:
 [1] GlassPy documentation — GlassPy latest documentation. Disponível em: <https://glasspy.readthedocs.io/en/latest/>. Acesso em: 22 maio. 2024. <br>
+
 [2] Sigma-Aldrich: Analytical, Biology, Chemistry & Materials Science products and services. Disponível em: <https://www.sigmaaldrich.com>. <br>
+
 [3] SciGlass. Disponível em: <https://www.akoscheminformatics.de/sciglass/sciglass.htm>. Acesso em: 25 maio. 2024.<br>
+
 [4] CASSAR, D. R. GlassNet: A multitask deep neural network for predicting many glass properties. Ceramics international, v. 49, n. 22, p. 36013–36024, 1 nov. 2023.<br>
+
 [5] WIKIPEDIA CONTRIBUTORS. Young’s modulus. Disponível em: <https://en.wikipedia.org/wiki/Young%27s_modulus>. <br>
+
 [6] CASSAR, D. R. drcassar/glasspy. Disponível em: <https://github.com/drcassar/glasspy>. Acesso em: 25 maio. 2024. <br>
 
 
