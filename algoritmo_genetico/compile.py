@@ -11,7 +11,7 @@ from funcoes import cruzamento_ponto_duplo as funcao_cruzamento
 from funcoes import mutacao_sucessiva as funcao_mutacao_1
 from funcoes import mutacao_simples as funcao_mutacao_2
 
-df_compounds_and_prices = pd.read_csv('../analise_exploratoria/Prices.csv',sep=',')
+df_compounds_and_prices = pd.read_csv('../analise_exploratoria/prices.csv',sep=',')
 
 COMPOUNDS = list(df_compounds_and_prices['Oxide Coumpounds'])
 PRECOS = list(df_compounds_and_prices['Price per gram(dolar/gram)'])
@@ -88,13 +88,14 @@ from funcoes import preco_composicao
 preco = preco_composicao(melhor_individuo_observado, PRECOS)
 
 dicionario= {
-   'Preço':preco,
-   'Módulo de Young': float(predicao['YoungModulus'].iloc[0]),
-   'Microdureza': float(predicao['Microhardness'].iloc[0])
+   'Preço':[preco],
+   'Módulo de Young': [float(predicao['YoungModulus'].iloc[0])],
+   'Microdureza': [float(predicao['Microhardness'].iloc[0])]
 
 }
 
-pd.DataFrame(dicionario).to_excel('dados_melhor_candidato')
+out = pd.DataFrame(dicionario)
+out.to_excel('dados_melhor_candidato.xlsx')
 evolucao = pd.DataFrame()
 evolucao['geracoes'] = geracoes
 evolucao['score'] = melhores_das_geracoes
