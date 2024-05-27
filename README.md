@@ -40,7 +40,7 @@ Considerando que o objetivo principal e os dados (parte fundamental do projeto) 
 
 ### Estratégias para o trabalaho
 <ul>
-  <li>Preparação dos Dados</li>
+  <li><b>Preparação dos Dados</b></li>
   <p align="justify">Utilizando o Glasspy como intermediador, os dados do SciGlass foram importados e transformados em um DataFrame do tipo Pandas, essa conversão foi precisa para uma visualização mais agradável dos dados. Análises estatísticas foram feitas com os diferentes tipos de colunas presentes no dataset, sendo elas</p>
   <ul>
     <li>Elements (Elementos)</li>
@@ -58,7 +58,7 @@ Considerando que o objetivo principal e os dados (parte fundamental do projeto) 
   </ul>
 <p align="justify"> Em nosso projeto, objetivamos maximizar essas duas propriedades, porém, com a restrição da minimização do preço do composto, restringimos nossa busca a apenas os compostos óxidos e obtivemos um total de 196 composições. Para a busca de preços de cada composto contemplado no GlassPy, fizemos a coleta de preços em dólar (USD) por grama de cada composto de acordo com os valores do Sigma Aldrich. Os valores obtidos foram guardados em um dicionário com o intuito de serem usados posteriormente na execução do algoritmo genético. Importante ressaltar que em nossa busca nem todos os preços foram encontrados. Os valores faltantes então, foram posteriormente removidos do dicionário.</p>
   
-  <li>Algoritmo Genético</li>
+  <li><b>Algoritmo Genético</b></li>
   <p align="justify">Utilizando como base o algoritmo genético desenvolvido em sala de aula [7], alteramos o mesmo para que se adequasse ao nosso objetivo. Nossas alterações consistiram principalmente no arquivo de funções, onde foi implementado uma nova função para a etapa de cruzamento juntando os dois tipos de cruzamento vistos: ponto simples e ponto duplo. Alterações nas funções de mutação simples e mutação sucessiva também foram feitas. O fluxo de seleção, cruzamento, mutação e atualização do hall da fama (comum aos algoritmos genéticos) foi implementado nessa etapa do projeto. Para obter-se o resultado do preço do melhor individuo observado utilizou-se sua porcentagem no composto como um todo multiplicado por seu valor em dólares por grama. </p>
 </ul>
 
