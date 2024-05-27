@@ -98,7 +98,7 @@ def funcao_objetivo(candidato, lista_de_compostos, lista_de_precos, modelo):
     pontuacao = (((modulo_young/modulo_young_max) - 1) ** 2 + ((microdureza/microdureza_max) - 1) ** 2 + ((preco/preco_min) - 1) ** 2) ** (1/2) / ((compostos_nao_usados + 1) ** (1/3))
 
     if compostos_nao_usados >= (len(candidato) - 1) or microdureza < 6 or modulo_young_max < 87:
-        pontuacao = 1e3 / (microdureza + modulo_young_max)
+        pontuacao = 1e3
 
     return pontuacao
 
