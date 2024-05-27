@@ -99,3 +99,4 @@ out.to_excel('dados_melhor_candidato.xlsx')
 evolucao = pd.DataFrame()
 evolucao['geracoes'] = geracoes
 evolucao['score'] = melhores_das_geracoes
+evolucao.to_excel('evolucao.xlsx')
