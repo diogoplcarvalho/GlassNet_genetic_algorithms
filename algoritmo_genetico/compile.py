@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
 from glasspy.predict import GlassNet
 from glasspy.data import SciGlass
 from functools import partial
@@ -12,26 +14,24 @@ from funcoes import mutacao_sucessiva as funcao_mutacao_1
 from funcoes import mutacao_simples as funcao_mutacao_2
 from funcoes import preco_composicao
 
-
-df_compounds_and_prices = pd.read_csv('../analise_exploratoria/prices.csv',sep=',')
+df_compounds_and_prices = pd.read_csv('../analise_exploratoria/Prices.csv',sep=',')
 
 COMPOUNDS = list(df_compounds_and_prices['Oxide Coumpounds'])
 PRECOS = list(df_compounds_and_prices['Price per gram(dolar/gram)'])
 NUM_COMPOUNDS = len(COMPOUNDS)
 VALOR_MAX_COMPOUNDS = 100
 
-TAMANHO_POPULACAO = 300
-NUM_GERACOES = 2
+TAMANHO_POPULACAO = 30
+NUM_GERACOES = 5
 CHANCE_DE_CRUZAMENTO = 0.5
 CHANCE_DE_MUTACAO = 0.05
 CHANCE_DE_MUTACAO_POR_GENE = 0.25
 TAMANHO_TORNEIO = 3
 
-source = SciGlass()
+#source = SciGlass()
 MODEL = GlassNet()
 
 funcao_objetivo = partial(funcao_objetivo_pop, lista_de_compostos=COMPOUNDS, lista_de_precos=PRECOS, modelo=MODEL)
-
 
 
 populacao = cria_populacao(TAMANHO_POPULACAO, NUM_COMPOUNDS, VALOR_MAX_COMPOUNDS)
@@ -47,7 +47,7 @@ composicoes_melhores = []
 numeros_de_compostos_usados = []
 
 for n in range(NUM_GERACOES):
-    #print(f'Geração {n}', end='\r') 
+    print(f'Geração {n}', end='\r') 
     
     # Seleção
     fitness = funcao_objetivo(populacao)        
@@ -70,19 +70,18 @@ for n in range(NUM_GERACOES):
     menor_fitness = min(fitness)
     indice = fitness.index(menor_fitness)
     hall_da_fama.append(proxima_geracao[indice])    
-    melhores_das_geracoes.append(menor_fitness)
+        
     melhor_individuo_geracao = hall_da_fama[n]
-
     dict_composition = dict(zip(COMPOUNDS, melhor_individuo_geracao))
     predicao = MODEL.predict(dict_composition)
     preco_melhor_local = preco_composicao(melhor_individuo_geracao, PRECOS)
 
 
-    
+        
     dicionario_composicao_limpa = {chave: valor for chave, valor in dict_composition.items() if valor != 0}
     numero_de_compostsos = len(list(dicionario_composicao_limpa.keys()))
-    
-    
+        
+    melhores_das_geracoes.append(menor_fitness)
     melhores_hardness.append(predicao['Microhardness'].iloc[0])
     melhores_modulos_young.append(predicao['YoungModulus'].iloc[0])
     melhores_precos.append(preco_melhor_local)
@@ -92,16 +91,15 @@ for n in range(NUM_GERACOES):
     populacao = proxima_geracao
         
 fitness = funcao_objetivo(hall_da_fama)
-maior_fitness = max(fitness)
-indice = fitness.index(maior_fitness)
+menor_fitness = min(fitness)
+indice = fitness.index(menor_fitness)
 melhor_individuo_observado = hall_da_fama[indice]
-melhor_individuo_observado
-
-dict_composition = dict(zip(COMPOUNDS, melhor_individuo_observado))
-predicao = MODEL.predict(dict_composition)
-
 
 preco = preco_composicao(melhor_individuo_observado, PRECOS)
+
+print(f"Preço: {preco}")
+print(f"Módulo de Young: {float(predicao['YoungModulus'].iloc[0])}")
+print(f"Microdureza: {float(predicao['Microhardness'].iloc[0])}")
 
 dicionario= {
    'Preço':[preco],
@@ -111,7 +109,7 @@ dicionario= {
 }
 
 out = pd.DataFrame(dicionario)
-out.to_excel('dados_melhor_candidato.xlsx')
+#out.to_excel('dados_melhor_candidato.xlsx')
 evolucao = pd.DataFrame()
 evolucao['Gerações'] = geracoes
 evolucao['Score'] = melhores_das_geracoes
@@ -120,4 +118,4 @@ evolucao['Módulo de Young'] = melhores_modulos_young
 evolucao['Preços'] = melhores_precos
 evolucao['Número de compostos usados']=numeros_de_compostos_usados
 evolucao['Composição'] = composicoes_melhores
-evolucao.to_excel('evolucao.xlsx')
+evolucao.to_excel('Melhores de cada geração.xlsx')
