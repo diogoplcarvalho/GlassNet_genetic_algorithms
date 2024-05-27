@@ -91,11 +91,14 @@ def funcao_objetivo(candidato, lista_de_compostos, lista_de_precos, modelo):
     preco = preco_composicao(candidato, lista_de_precos)
     compostos_nao_usados = candidato.count(0)
 
-    #pontuacao = abs((modulo_young/ 85.7) - 1 + (microdureza/5.8) - 1 + (preco/0.72) - 1)
-    pontuacao = (((modulo_young/500) - 1) ** 2 + ((microdureza/502) - 1) ** 2 + ((preco/0.0533) - 1) ** 2) ** (1/2) / (compostos_nao_usados + 1)
+    modulo_young_max = 500
+    microdureza_max = 502
+    preco_min = 0.0533
 
-    if preco == 0:
-        pontuacao = 1e3
+    pontuacao = (((modulo_young/modulo_young_max) - 1) ** 2 + ((microdureza/microdureza_max) - 1) ** 2 + ((preco/preco_min) - 1) ** 2) ** (1/2) / ((compostos_nao_usados + 1) ** (1/3))
+
+    if compostos_nao_usados >= (len(candidato) - 1) or microdureza < 6 or modulo_young_max < 87:
+        pontuacao = 1e3 / (microdureza + modulo_young_max)
 
     return pontuacao
 
