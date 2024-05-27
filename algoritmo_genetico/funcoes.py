@@ -1,8 +1,7 @@
 import random
 import numpy as np
-from glasspy.predict import GlassNet
 
-model = GlassNet()
+
 
 ###############################################################################
 #                               Funções Básicas                               #
@@ -18,8 +17,11 @@ def preco_composicao(candidato, lista_de_precos):
     """
 
     candidato = np.array(candidato)
-    candidato_grama = candidato/sum(candidato) 
-    preco = sum(candidato_grama * np.array(lista_de_precos))
+    if sum(candidato) == 0:
+        preco = 0
+    else:
+        candidato_grama = candidato/sum(candidato) 
+        preco = sum(candidato_grama * np.array(lista_de_precos))
 
     return preco
 
@@ -47,11 +49,12 @@ def cria_candidato(n, valor_max):
       n: inteiro que representa o número de compostos.
       valor_max: inteiro represtando o valor máximo de um composto.
     """
-    
-    candidato = []
+
+    candidato = [0] * n
+
     for _ in range(n):
-        gene = cria_gene(valor_max)
-        candidato.append(gene)
+        if random.random() < (3500 / n):
+            candidato[cria_gene(valor_max)]
     return candidato
 
 
@@ -88,8 +91,14 @@ def funcao_objetivo(candidato, lista_de_compostos, lista_de_precos, modelo):
     preco = preco_composicao(candidato, lista_de_precos)
     compostos_nao_usados = candidato.count(0)
 
-    #pontuacao = abs((modulo_young/ 85.7) - 1 + (microdureza/5.8) - 1 + (preco/0.72) - 1)
-    pontuacao = (((modulo_young/ 85.7) - 1) ** 2 + ((microdureza/5.8) - 1) ** 2 + ((preco/0.72) - 1) ** 2) ** (1/2) / (compostos_nao_usados + 1)
+    modulo_young_max = 500
+    microdureza_max = 502
+    preco_min = 0.0533
+
+    pontuacao = (((modulo_young/modulo_young_max) - 1) ** 2 + ((microdureza/microdureza_max) - 1) ** 2 + ((preco/preco_min) - 1) ** 2) ** (1/2) / ((compostos_nao_usados + 1) ** (1/3))
+
+    if compostos_nao_usados >= (len(candidato) - 1) or microdureza < 6 or modulo_young_max < 87:
+        pontuacao = 1e3 / (microdureza + modulo_young_max)
 
     return pontuacao
 
@@ -207,7 +216,7 @@ def cruzamento_ponto_simples_e_duplo(pai, mae, chance_de_cruzamento):
     """
 
     chance_de_cruzamento_duplo = (1 - chance_de_cruzamento)/2
-    chance_de_cruzamento_simples = (1 - chance_de_cruzamento)/2
+    chance_de_cruzamento_simples = 1 - chance_de_cruzamento
     chance_aleatoria = random.random()
 
     if chance_aleatoria < chance_de_cruzamento_duplo:
@@ -228,6 +237,7 @@ def cruzamento_ponto_simples_e_duplo(pai, mae, chance_de_cruzamento):
 ###############################################################################
 #                                   Mutação                                   #
 ###############################################################################
+
 
 def mutacao_sucessiva(populacao, chance_de_mutacao, chance_mutacao_gene, valor_max):
     """Realiza mutação sucessiva no problema.
@@ -261,14 +271,43 @@ def mutacao_simples(populacao, chance_de_mutacao, valor_max):
       valor_max: inteiro represtando o valor máximo de um composto.
     """
     
+    populacao_valores = []
+    for i in populacao:
+        populacao_valores.append(sum(i))
+
+    desvio_padrao_populacao = int(np.std(populacao_valores))
+
     for individuo in populacao:
         if random.random() < chance_de_mutacao:
             gene = random.randint(0, len(individuo) - 1)
             valor_gene = individuo[gene]
             sera_maior = random.randint(0, 1)
             if sera_maior:
-                possivel_valor_gene = valor_gene + random.randint(0, 10)
+                possivel_valor_gene = valor_gene + random.randint(0, desvio_padrao_populacao)
                 individuo[gene] = possivel_valor_gene if possivel_valor_gene <= valor_max else valor_max
             else: 
-                possivel_valor_gene = valor_gene - random.randint(0, 10)
+                possivel_valor_gene = valor_gene - random.randint(0, desvio_padrao_populacao)
                 individuo[gene] = possivel_valor_gene if possivel_valor_gene >= 0 else 0
+
+
+def mutacao_troca(populacao, chance_de_mutacao):
+    """Aplica mutacao de troca em um indivíduo
+
+    Args:
+      populacao: lista contendo os indivíduos do problema
+      chance_de_mutacao: float entre 0 e 1 representando a chance de mutação
+
+    """
+    for individuo in populacao:
+        if random.random() < chance_de_mutacao:
+            gene1 = random.randint(0, len(individuo) - 1)
+            gene2 = random.randint(0, len(individuo) - 1)
+
+            while gene1 == gene2:
+                gene1 = random.randint(0, len(individuo) - 1)
+                gene2 = random.randint(0, len(individuo) - 1)
+
+            individuo[gene1], individuo[gene2] = (
+                individuo[gene2],
+                individuo[gene1],
+            )
