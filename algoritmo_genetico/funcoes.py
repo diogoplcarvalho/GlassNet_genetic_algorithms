@@ -73,7 +73,8 @@ def cria_populacao_compostos(tamanho, n, valor_max):
     return populacao
 
 
-def funcao_objetivo(candidato, lista_de_compostos, lista_de_precos, modelo):
+def funcao_objetivo(candidato, lista_de_compostos, lista_de_precos, modelo, 
+                    modulo_young_max = 500, microdureza_max = 502, preco_min = 0.0533):
     """Computa a função objetivo no problema.
 
     Args:
@@ -81,6 +82,9 @@ def funcao_objetivo(candidato, lista_de_compostos, lista_de_precos, modelo):
       lista_de_compostos = uma lista contendo os compostos utilizáveos pelo candidato.
       lista_de_precos = uma lista contendo os precos dos compostos do candidato.
       modelo = um modelo de predição de propriedades de vidro a partir de sua composição.
+      modulo_young_max = máximo absoluto do módulo de Young.
+      microdureza_max = máximo absoluto do módulo de microdureza.
+      preco_min = mínimo absoluto do preço.
     """
     
     dict_composicao = dict(zip(lista_de_compostos, candidato))
@@ -95,9 +99,9 @@ def funcao_objetivo(candidato, lista_de_compostos, lista_de_precos, modelo):
     microdureza_max = 502
     preco_min = 0.0533
 
-    pontuacao = (((modulo_young/modulo_young_max) - 1) ** 2 + ((microdureza/microdureza_max) - 1) ** 2 + ((preco/preco_min) - 1) ** 2) ** (1/2) / ((compostos_nao_usados + 1) ** (1/3))
+    pontuacao = (((modulo_young/modulo_young_max) - 1) ** 2 + ((microdureza/microdureza_max) - 1) ** 2 + ((preco/preco_min) - 1) ** (2)) ** (1/2) / ((compostos_nao_usados + 1) ** (1/3))
 
-    if compostos_nao_usados >= (len(candidato) - 1) or microdureza < 6 or modulo_young_max < 87:
+    if compostos_nao_usados >= (len(candidato) - 2) or microdureza < 6 or modulo_young_max < 87:
         pontuacao = 1e3
 
     return pontuacao
@@ -255,10 +259,10 @@ def mutacao_sucessiva(populacao, chance_de_mutacao, chance_mutacao_gene, valor_m
                     valor_gene = individuo[gene]
                     sera_maior = random.randint(0, 1)
                     if sera_maior:
-                        possivel_valor_gene = valor_gene + random.randint(0, 10)
+                        possivel_valor_gene = valor_gene + random.randint(0, valor_max/2)
                         individuo[gene] = possivel_valor_gene if possivel_valor_gene <= valor_max else valor_max
                     else: 
-                        possivel_valor_gene = valor_gene - random.randint(0, 10)
+                        possivel_valor_gene = valor_gene - random.randint(0, valor_max/2)
                         individuo[gene] = possivel_valor_gene if possivel_valor_gene >= 0 else 0
 
 
@@ -271,22 +275,16 @@ def mutacao_simples(populacao, chance_de_mutacao, valor_max):
       valor_max: inteiro represtando o valor máximo de um composto.
     """
     
-    populacao_valores = []
-    for i in populacao:
-        populacao_valores.append(sum(i))
-
-    desvio_padrao_populacao = int(np.std(populacao_valores))
-
     for individuo in populacao:
         if random.random() < chance_de_mutacao:
             gene = random.randint(0, len(individuo) - 1)
             valor_gene = individuo[gene]
             sera_maior = random.randint(0, 1)
             if sera_maior:
-                possivel_valor_gene = valor_gene + random.randint(0, desvio_padrao_populacao)
+                possivel_valor_gene = valor_gene + random.randint(0, valor_max/2)
                 individuo[gene] = possivel_valor_gene if possivel_valor_gene <= valor_max else valor_max
             else: 
-                possivel_valor_gene = valor_gene - random.randint(0, desvio_padrao_populacao)
+                possivel_valor_gene = valor_gene - random.randint(0, valor_max/2)
                 individuo[gene] = possivel_valor_gene if possivel_valor_gene >= 0 else 0
 
 
