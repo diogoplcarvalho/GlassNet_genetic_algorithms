@@ -1,8 +1,7 @@
 import random
 import numpy as np
-from glasspy.predict import GlassNet
 
-model = GlassNet()
+
 
 ###############################################################################
 #                               Funções Básicas                               #
@@ -18,8 +17,11 @@ def preco_composicao(candidato, lista_de_precos):
     """
 
     candidato = np.array(candidato)
-    candidato_grama = candidato/sum(candidato) 
-    preco = sum(candidato_grama * np.array(lista_de_precos))
+    if sum(candidato) == 0:
+        preco = 0
+    else:
+        candidato_grama = candidato/sum(candidato) 
+        preco = sum(candidato_grama * np.array(lista_de_precos))
 
     return preco
 
@@ -90,7 +92,10 @@ def funcao_objetivo(candidato, lista_de_compostos, lista_de_precos, modelo):
     compostos_nao_usados = candidato.count(0)
 
     #pontuacao = abs((modulo_young/ 85.7) - 1 + (microdureza/5.8) - 1 + (preco/0.72) - 1)
-    pontuacao = (((modulo_young/ 85.7) - 1) ** 2 + ((microdureza/5.8) - 1) ** 2 + ((preco/0.72) - 1) ** 2) ** (1/2) / (compostos_nao_usados + 1)
+    pontuacao = (((modulo_young/500) - 1) ** 2 + ((microdureza/502) - 1) ** 2 + ((preco/0.0533) - 1) ** 2) ** (1/2) / (compostos_nao_usados + 1)
+
+    if preco == 0:
+        pontuacao = 1e3
 
     return pontuacao
 
@@ -208,7 +213,7 @@ def cruzamento_ponto_simples_e_duplo(pai, mae, chance_de_cruzamento):
     """
 
     chance_de_cruzamento_duplo = (1 - chance_de_cruzamento)/2
-    chance_de_cruzamento_simples = (1 - chance_de_cruzamento)/2
+    chance_de_cruzamento_simples = 1 - chance_de_cruzamento
     chance_aleatoria = random.random()
 
     if chance_aleatoria < chance_de_cruzamento_duplo:
@@ -229,6 +234,7 @@ def cruzamento_ponto_simples_e_duplo(pai, mae, chance_de_cruzamento):
 ###############################################################################
 #                                   Mutação                                   #
 ###############################################################################
+
 
 def mutacao_sucessiva(populacao, chance_de_mutacao, chance_mutacao_gene, valor_max):
     """Realiza mutação sucessiva no problema.
@@ -262,16 +268,22 @@ def mutacao_simples(populacao, chance_de_mutacao, valor_max):
       valor_max: inteiro represtando o valor máximo de um composto.
     """
     
+    populacao_valores = []
+    for i in populacao:
+        populacao_valores.append(sum(i))
+
+    desvio_padrao_populacao = int(np.std(populacao_valores))
+
     for individuo in populacao:
         if random.random() < chance_de_mutacao:
             gene = random.randint(0, len(individuo) - 1)
             valor_gene = individuo[gene]
             sera_maior = random.randint(0, 1)
             if sera_maior:
-                possivel_valor_gene = valor_gene + random.randint(0, 10)
+                possivel_valor_gene = valor_gene + random.randint(0, desvio_padrao_populacao)
                 individuo[gene] = possivel_valor_gene if possivel_valor_gene <= valor_max else valor_max
             else: 
-                possivel_valor_gene = valor_gene - random.randint(0, 10)
+                possivel_valor_gene = valor_gene - random.randint(0, desvio_padrao_populacao)
                 individuo[gene] = possivel_valor_gene if possivel_valor_gene >= 0 else 0
 
 
