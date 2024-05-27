@@ -47,11 +47,12 @@ def cria_candidato(n, valor_max):
       n: inteiro que representa o número de compostos.
       valor_max: inteiro represtando o valor máximo de um composto.
     """
-    
-    candidato = []
+
+    candidato = [0] * n
+
     for _ in range(n):
-        gene = cria_gene(valor_max)
-        candidato.append(gene)
+        if random.random() < (3500 / n):
+            candidato[cria_gene(valor_max)]
     return candidato
 
 
@@ -272,3 +273,26 @@ def mutacao_simples(populacao, chance_de_mutacao, valor_max):
             else: 
                 possivel_valor_gene = valor_gene - random.randint(0, 10)
                 individuo[gene] = possivel_valor_gene if possivel_valor_gene >= 0 else 0
+
+
+def mutacao_troca(populacao, chance_de_mutacao):
+    """Aplica mutacao de troca em um indivíduo
+
+    Args:
+      populacao: lista contendo os indivíduos do problema
+      chance_de_mutacao: float entre 0 e 1 representando a chance de mutação
+
+    """
+    for individuo in populacao:
+        if random.random() < chance_de_mutacao:
+            gene1 = random.randint(0, len(individuo) - 1)
+            gene2 = random.randint(0, len(individuo) - 1)
+
+            while gene1 == gene2:
+                gene1 = random.randint(0, len(individuo) - 1)
+                gene2 = random.randint(0, len(individuo) - 1)
+
+            individuo[gene1], individuo[gene2] = (
+                individuo[gene2],
+                individuo[gene1],
+            )
