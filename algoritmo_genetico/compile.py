@@ -87,10 +87,6 @@ from funcoes import preco_composicao
 
 preco = preco_composicao(melhor_individuo_observado, PRECOS)
 
-print(f"Preço: {preco}")
-print(f"Módulo de Young: {float(predicao['YoungModulus'].iloc[0])}")
-print(f"Microdureza: {float(predicao['Microhardness'].iloc[0])}")
-
 dicionario= {
    'Preço':preco,
    'Módulo de Young': float(predicao['YoungModulus'].iloc[0]),
