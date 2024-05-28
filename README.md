@@ -64,6 +64,7 @@ Considerando que o objetivo principal e os dados (parte fundamental do projeto) 
     <li><b>Função de ativação:</b></li>
     <p align="justify">A função cria um dicionário de composição a partir da lista de candidatos e usa um modelo preditivo para estimar as propriedades do vidro. A pontuação é calculada normalizando e combinando os desvios das propriedades e do custo em relação aos valores de referência, esses valores de referência são: No caso das propriedades com o objetivo de maximização (“Microdureza” e Módulo de Young), o valor máximo encontrado no conjunto de dados e no caso de minimização (Preço do composto) o valor mínimo encontrado, com penalização adicional para composições que utilizam poucos compostos ou apresentam valores de “microdureza” e módulo de Young fora de certos limites arbitrariamente estabelecidos. A menor pontuação indica uma melhor composição segundo os critérios estabelecidos. Logo, o fim último da evolução é a minimização da função objetivo.</p>
     <li><b>Etapa de Cruzamento</b></li>
+    <p align="justify">Na etapa de cruzamento, utilizamos uma junção dos dois tipos de cruzamento que vimos ao longo do semestre, o cruzamento de ponto simples e cruzamento de ponto duplo, onde cada um ocorrerá apenas se uma condição for atendida com base numa chance aleatória definida.</p>
     <li><b>Etapa de mutação</b></li>
   </ul>
 </ul>
