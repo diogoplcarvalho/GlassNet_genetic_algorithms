@@ -104,7 +104,7 @@ def funcao_objetivo(candidato, lista_de_compostos, lista_de_precos, modelo,
     if compostos_nao_usados >= (len(candidato) - 2) or microdureza < 6 or modulo_young_max < 87 or preco > 0.724496:
         fitness = 1e3
 
-    return pontuacao
+    return fitness
 
 
 def funcao_objetivo_pop(populacao, lista_de_compostos, lista_de_precos, modelo):
