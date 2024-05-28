@@ -89,7 +89,7 @@ Nessa etapa, informamos as bibliotecas e módulos utilizados no desenvolvimento 
   <ul>
     <li><b>GlassNet</b>: Modelo preditivo (Rede Neural Multitask) utilzada para prever as propriedades do material com base na composição informada;</li>
     <li><b>SciGlass</b>: Base de dados contendo mais de 300 mil composições de materiais vítreos.</li> 
-  </ul>ul>
+  </ul>
   <li><b>Matplotlib</b>: Biblioteca utilizada para o plot dos gráficos presentes no projeto (histogramas);</li>
   <li><b>Numpy</b>: Biblioetca especializada em trabalhar com arrays multidimensionais e matrizes;</li>
   <li><b>Seaborn</b>: Biblioteca de visualização de dados construida com base no Matplotlib. Utilizada para estilização dos gráficos do projeto;</li>
