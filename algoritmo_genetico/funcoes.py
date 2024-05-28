@@ -53,7 +53,7 @@ def cria_candidato(n, valor_max):
     candidato = [0] * n
 
     for _ in range(n):
-        if random.random() < (3500 / n):
+        if random.random() < (35 / n):
             candidato[cria_gene(valor_max)]
     return candidato
 
@@ -74,7 +74,7 @@ def cria_populacao_compostos(tamanho, n, valor_max):
 
 
 def funcao_objetivo(candidato, lista_de_compostos, lista_de_precos, modelo, 
-                    modulo_young_max = 500, microdureza_max = 502, preco_min = 0.0533):
+                    modulo_young_max = 500, microdureza_max = 502, preco_max = 84.8):
     """Computa a função objetivo no problema.
 
     Args:
@@ -84,7 +84,7 @@ def funcao_objetivo(candidato, lista_de_compostos, lista_de_precos, modelo,
       modelo = um modelo de predição de propriedades de vidro a partir de sua composição.
       modulo_young_max = máximo absoluto do módulo de Young.
       microdureza_max = máximo absoluto do módulo de microdureza.
-      preco_min = mínimo absoluto do preço.
+      preco_max = máximo absoluto do preço.
     """
     
     dict_composicao = dict(zip(lista_de_compostos, candidato))
@@ -95,14 +95,10 @@ def funcao_objetivo(candidato, lista_de_compostos, lista_de_precos, modelo,
     preco = preco_composicao(candidato, lista_de_precos)
     compostos_nao_usados = candidato.count(0)
 
-    modulo_young_max = 500
-    microdureza_max = 502
-    preco_min = 0.0533
-
-    fitness = (((modulo_young/modulo_young_max) - 1) ** 2 + ((microdureza/microdureza_max) - 1) ** 2 + (preco/preco_min) ** (2)) ** (1/2) / ((compostos_nao_usados + 1) ** (1/3))
+    fitness = ((((modulo_young/modulo_young_max) - 1) ** 2 + ((microdureza/microdureza_max) - 1) ** 2 + ((preco/preco_max)) ** (2)) ** (1/2) / ((compostos_nao_usados + 1) ** (1/3))) / (3 ** (1/2))
 
     if compostos_nao_usados >= (len(candidato) - 2) or microdureza < 6 or modulo_young_max < 87 or preco > 0.724496:
-        fitness = 1e3
+        fitness = 1
 
     return fitness
 
