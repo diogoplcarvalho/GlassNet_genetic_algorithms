@@ -9,7 +9,7 @@
 <p align="justify">Vidros à prova de bala são materiais críticos em uma variedade de aplicações que vão desde a proteção de veículos até a segurança de instalações. A eficácia desses vidros depende de sua capacidade de absorver e dissipar a energia de impactos de alta velocidade, impedindo a penetração de projéteis. A resistência balística do vidro é fortemente influenciada pela sua composição química. Diferentes compostos e aditivos podem conferir ao vidro propriedades como maior dureza, resistência ao impacto, e tenacidade. Contudo, a introdução desses compostos pode aumentar substancialmente os custos de produção, tornando imperativo encontrar um equilíbrio entre desempenho e custo. O desenvolvimento de vidros à prova de bala envolve um complexo processo de experimentação e ajuste fino das formulações químicas. Tradicionalmente, esse processo pode ser caro e demorado. Aqui, entra a aplicação de algoritmos genéticos, que oferecem uma abordagem eficiente para explorar um vasto espaço de combinações de compostos e identificar aquelas que maximizam a resistência balística a um custo reduzido.</p>
 
 ### Objetivo
-<p align="justify">O objetivo deste projeto é determinar vidros de custo acessíveis que apresentem alta resistência balística, em específico, objetivamos maximizar o módulo de Young e a microdureza do material, enquanto buscamos as melhores alternativas para minimizar, utilizando algoritmos genéticos, o custo das matérias-primas na produção desses vidro. </p>
+<p align="justify">O objetivo deste projeto é determinar vidros de custo acessíveis que apresentem alta resistência balística, em específico, objetivamos maximizar o módulo de Young e a microdureza do material, enquanto buscamos as melhores alternativas para minimizar, utilizando algoritmos genéticos, o custo das matérias-primas na produção desses vidros. </p>
 
 ### Sobre o Dataset e o Modelo Preditivo
 
@@ -38,7 +38,7 @@ Considerando que o objetivo principal e os dados (parte fundamental do projeto) 
     <li><b>funcoes.py</b>: Script python contendo as funções precisas para execução do algoritmo genético. Funções essas que envolvem a criação dos candidatos, população, gene, função objetivo, funções relacionadas as etapas de cruzamento e mutação.</li>
   </ul> </ul>
 
-### Estratégias para o trabalaho
+### Estratégias para o trabalho
 <ul>
   <li><b>Preparação dos Dados</b></li>
   <p align="justify">Utilizando o Glasspy como intermediador, os dados do SciGlass foram importados e transformados em um DataFrame do tipo Pandas, essa conversão foi precisa para uma visualização mais agradável dos dados. Análises estatísticas foram feitas com os diferentes tipos de colunas presentes no dataset, sendo elas</p>
@@ -62,7 +62,7 @@ Considerando que o objetivo principal e os dados (parte fundamental do projeto) 
   <p align="justify">Utilizando como base o algoritmo genético desenvolvido em sala de aula [7], alteramos o mesmo para que se adequasse ao nosso objetivo. Nossas alterações consistiram principalmente no arquivo de funções, onde foi implementado uma nova função para a etapa de cruzamento juntando os dois tipos de cruzamento vistos: ponto simples e ponto duplo. Alterações nas funções de mutação simples e mutação sucessiva também foram feitas. O fluxo de seleção, cruzamento, mutação e atualização do hall da fama (comum aos algoritmos genéticos) foi implementado nessa etapa do projeto. Para obter-se o resultado do preço do melhor individuo observado utilizou-se sua porcentagem no composto como um todo multiplicado por seu valor em dólares por grama. Foi criado uma função objetivo para calcular a pontuação do candidato a partir de uma equação nova. Dentre as principais alterações feitas com base no script de funções disponibilizado pelo professor, podem-se destacar a função de ativação, a etapa de cruzamento e a etapa de mutação. </p>
   <ul>
     <li><b>Função objetivo</b></li>
-    <p align="justify">A função objetivo determina a pontuação do candidato a partir de uma equação inventada pelos colaboradores do projeto, em que o denominador envolve a raiz quadrado de um termo grande, havendo a soma do quadrado do complementar do módulo de young e do da microdureza do candidato normalizado pelo máximo absoluto somado ao quadrado 'do preço do candidato dividido pelo preço mínimo menos 1'. Nisso, o numerador representa a raiz cúbida do número de compostos não utilizados dos possíveis na composição. Veja a fórmula de forma mais clara:</p>
+    <p align="justify">A função objetivo determina a pontuação do candidato a partir de uma equação inventada pelos colaboradores do projeto, em que o denominador envolve a raiz quadrado de um termo grande, havendo a soma do quadrado do complementar do módulo de young e do da microdureza do candidato normalizado pelo máximo absoluto somado ao quadrado 'do preço do candidato dividido pelo preço mínimo menos 1'. Nisso, o numerador representa a raiz cúbica do número de compostos não utilizados dos possíveis na composição. Veja a fórmula de forma mais clara:</p>
   </ul>
 </ul>
 
