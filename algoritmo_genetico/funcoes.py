@@ -2,14 +2,13 @@ import random
 import numpy as np
 
 
-
 ###############################################################################
-#                               Funções Básicas                               #
+#                                Função Preço                                #
 ###############################################################################
 
 
 def preco_composicao(candidato, lista_de_precos):
-    """Define o preço de um candidato.
+    """Define o preço de um candidato por grama.
     
     Args:
       candidato = uma lista contendo os valores dos compostos utilizados em uma composição de vidro do problema.
@@ -79,7 +78,7 @@ def funcao_objetivo(candidato, lista_de_compostos, lista_de_precos, modelo,
 
     Args:
       candidato: uma lista contendo os valores dos compostos de uma composição de vidro do problema.
-      lista_de_compostos = uma lista contendo os compostos utilizáveos pelo candidato.
+      lista_de_compostos = uma lista contendo os compostos utilizáveis pelo candidato.
       lista_de_precos = uma lista contendo os precos dos compostos do candidato.
       modelo = um modelo de predição de propriedades de vidro a partir de sua composição.
       modulo_young_max = máximo absoluto do módulo de Young.
@@ -95,9 +94,12 @@ def funcao_objetivo(candidato, lista_de_compostos, lista_de_precos, modelo,
     preco = preco_composicao(candidato, lista_de_precos)
     compostos_nao_usados = candidato.count(0)
 
-    modulo_young_max = 500
-    microdureza_max = 502
-    preco_min = 0.0533
+    ''' 
+    Na função objetivo, a pontuação á calculada a partir da equação abaixo, em que o denominador envolve a 
+    raiz quadrado de um termo grande, havendo a soma do complementar do módulo de young e da microdureza do
+    candidato normalizado pelo máximo absoluto somado ao quadrado 'do preço do candidato dividido pelo preço mínimo menos 1'. 
+    Nisso, o numerador representa a raiz cúbida do número de compostos não utilizados dos possíveis na composição.
+    '''
 
     pontuacao = (((modulo_young/modulo_young_max) - 1) ** 2 + ((microdureza/microdureza_max) - 1) ** 2 + ((preco/preco_min) - 1) ** (2)) ** (1/2) / ((compostos_nao_usados + 1) ** (1/3))
 
@@ -112,7 +114,7 @@ def funcao_objetivo_pop(populacao, lista_de_compostos, lista_de_precos, modelo):
 
     Args:
       candidato: uma lista contendo os valores dos compostos de uma composição de vidro do problema.
-      lista_de_compostos = uma lista contendo os compostos utilizáveos pelo candidato.
+      lista_de_compostos = uma lista contendo os compostos utilizáveis pelo candidato.
       lista_de_precos = uma lista contendo os precos dos compostos do candidato.
       modelo = um modelo de predição de propriedades de vidro a partir de sua composição.
     """
@@ -126,18 +128,6 @@ def funcao_objetivo_pop(populacao, lista_de_compostos, lista_de_precos, modelo):
 ###############################################################################
 #                                   Seleção                                   #
 ###############################################################################
-
-
-def selecao_roleta_max(populacao, fitness):
-    """Realiza seleção da população pela roleta.
-
-    Args:
-      populacao: lista contendo os individuos do problema.
-      fitness: lista contendo os valores computados da funcao objetivo.
-    """
-
-    selecionados = random.choices(populacao, fitness, k=len(populacao))
-    return selecionados
 
 
 def selecao_torneio_min(populacao, fitness, tamanho_torneio):
@@ -173,43 +163,6 @@ def selecao_torneio_min(populacao, fitness, tamanho_torneio):
 ###############################################################################
 
 
-def cruzamento_ponto_duplo(pai, mae, chance_de_cruzamento):
-    """Realiza cruzamento de ponto duplo.
-
-    Args:
-      pai: lista representando um individuo.
-      mae: lista representando um individuo.
-      chance_de_cruzamento: float entre 0 e 1 representando a chance de cruzamento.
-    """
-
-    if random.random() < chance_de_cruzamento:
-        corte1 = random.randint(1, len(mae) - 2)
-        corte2 = random.randint(corte1 + 1, len(mae) - 1)
-        filho1 = pai[:corte1] + mae[corte1:corte2] + pai[corte2:]
-        filho2 = mae[:corte1] + pai[corte1:corte2] + mae[corte2:]
-        return filho1, filho2
-    else:
-        return pai, mae
-
-
-def cruzamento_ponto_simples(pai, mae, chance_de_cruzamento):
-    """Realiza cruzamento de ponto simples.
-
-    Args:
-      pai: lista representando um individuo.
-      mae: lista representando um individuo.
-      chance_de_cruzamento: float entre 0 e 1 representando a chance de cruzamento.
-    """
-
-    if random.random() < chance_de_cruzamento:
-        corte = random.randint(1, len(mae) - 1)
-        filho1 = pai[:corte] + mae[corte:]
-        filho2 = mae[:corte] + pai[corte:]
-        return filho1, filho2
-    else:
-        return pai, mae
-
-
 def cruzamento_ponto_simples_e_duplo(pai, mae, chance_de_cruzamento):
     """Realiza cruzamento de ponto simples.
 
@@ -243,6 +196,28 @@ def cruzamento_ponto_simples_e_duplo(pai, mae, chance_de_cruzamento):
 ###############################################################################
 
 
+def mutacao_simples(populacao, chance_de_mutacao, valor_max):
+    """Realiza mutação simples no problema.
+
+    Args:
+      populacao: lista contendo os indivíduos do problema.
+      chance_de_mutacao: float entre 0 e 1 representando a chance de mutação.
+      valor_max: inteiro represtando o valor máximo de um composto.
+    """
+    
+    for individuo in populacao:
+        if random.random() < chance_de_mutacao:
+            gene = random.randint(0, len(individuo) - 1)
+            valor_gene = individuo[gene]
+            sera_maior = random.randint(0, 1)
+            if sera_maior:
+                possivel_valor_gene = valor_gene + random.randint(0, valor_max/2)
+                individuo[gene] = possivel_valor_gene if possivel_valor_gene <= valor_max else valor_max
+            else: 
+                possivel_valor_gene = valor_gene - random.randint(0, valor_max/2)
+                individuo[gene] = possivel_valor_gene if possivel_valor_gene >= 0 else 0
+
+
 def mutacao_sucessiva(populacao, chance_de_mutacao, chance_mutacao_gene, valor_max):
     """Realiza mutação sucessiva no problema.
 
@@ -266,36 +241,14 @@ def mutacao_sucessiva(populacao, chance_de_mutacao, chance_mutacao_gene, valor_m
                         individuo[gene] = possivel_valor_gene if possivel_valor_gene >= 0 else 0
 
 
-def mutacao_simples(populacao, chance_de_mutacao, valor_max):
-    """Realiza mutação simples no problema.
-
-    Args:
-      populacao: lista contendo os indivíduos do problema.
-      chance_de_mutacao: float entre 0 e 1 representando a chance de mutação.
-      valor_max: inteiro represtando o valor máximo de um composto.
-    """
-    
-    for individuo in populacao:
-        if random.random() < chance_de_mutacao:
-            gene = random.randint(0, len(individuo) - 1)
-            valor_gene = individuo[gene]
-            sera_maior = random.randint(0, 1)
-            if sera_maior:
-                possivel_valor_gene = valor_gene + random.randint(0, valor_max/2)
-                individuo[gene] = possivel_valor_gene if possivel_valor_gene <= valor_max else valor_max
-            else: 
-                possivel_valor_gene = valor_gene - random.randint(0, valor_max/2)
-                individuo[gene] = possivel_valor_gene if possivel_valor_gene >= 0 else 0
-
-
 def mutacao_troca(populacao, chance_de_mutacao):
     """Aplica mutacao de troca em um indivíduo
 
     Args:
-      populacao: lista contendo os indivíduos do problema
-      chance_de_mutacao: float entre 0 e 1 representando a chance de mutação
-
+      populacao: lista contendo os indivíduos do problema.
+      chance_de_mutacao: float entre 0 e 1 representando a chance de mutação.
     """
+    
     for individuo in populacao:
         if random.random() < chance_de_mutacao:
             gene1 = random.randint(0, len(individuo) - 1)
