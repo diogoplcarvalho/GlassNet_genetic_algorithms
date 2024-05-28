@@ -67,7 +67,7 @@ Considerando que o objetivo principal e os dados (parte fundamental do projeto) 
 </ul>
 
 $$
-Score = \frac{\sqrt{(\frac{ModuloYoung}{ModuloYoung_{MAX}} - 1)^2 + (\frac{Microdureza}{Microdureza_{MAX}} - 1)^2 + (\frac{Preco}{Preco_{MIN}} - 1)^2}}{\sqrt{3} \cdot \sqrt[3]{NumeroCompostosNaoUtilizados + 1}}
+Fitness = \frac{\sqrt{(\frac{ModuloYoung}{ModuloYoung_{MAX}} - 1)^2 + (\frac{Microdureza}{Microdureza_{MAX}} - 1)^2 + (\frac{Preco}{Preco_{max}})^2}}{\sqrt{3} \cdot \sqrt[3]{NumeroCompostosNaoUtilizados + 1}}
 $$  
 
 <ul>

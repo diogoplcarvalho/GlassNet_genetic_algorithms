@@ -52,9 +52,9 @@ def cria_candidato(n, valor_max):
 
     candidato = [0] * n
 
-    for _ in range(n):
+    for i in range(n):
         if random.random() < (35 / n):
-            candidato[cria_gene(valor_max)]
+            candidato[i] = cria_gene(valor_max)
     return candidato
 
 
