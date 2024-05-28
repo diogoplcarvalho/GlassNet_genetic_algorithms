@@ -95,6 +95,15 @@ def funcao_objetivo(candidato, lista_de_compostos, lista_de_precos, modelo,
     preco = preco_composicao(candidato, lista_de_precos)
     compostos_nao_usados = candidato.count(0)
 
+    ''' 
+    Na função objetivo, o fitness á calculada a partir da equação abaixo, em que o denominador envolve a 
+    raiz quadrado de um termo grande, havendo a soma do complementar do módulo de young e da microdureza do
+    candidato normalizado pelo máximo absoluto somado ao quadrado do preço do candidato normalizado. 
+    Nisso, o numerador representa a raiz cúbida do número de compostos não utilizados dos possíveis na composição,
+    em que tal termo é multiplicado por raiz quadrada de 3 para normalizar a pontuação. Assim, o fitness varia de 0
+    a 1, em que quanto mais próximo de 0, melhor é o candidato ao problema proposto.
+    '''
+
     fitness = ((((modulo_young/modulo_young_max) - 1) ** 2 + ((microdureza/microdureza_max) - 1) ** 2 + ((preco/preco_max)) ** (2)) ** (1/2) / ((compostos_nao_usados + 1) ** (1/3))) / (3 ** (1/2))
 
     if compostos_nao_usados >= (len(candidato) - 2) or microdureza < 6 or modulo_young_max < 87 or preco > 0.724496:
