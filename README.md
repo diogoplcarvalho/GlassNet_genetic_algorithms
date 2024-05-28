@@ -1,4 +1,4 @@
-# Algoritmos Genéticos: Otimização de vidros a prova de bala
+# Algoritmos Genéticos: Otimização de vidros à prova de bala
 
 ## Equipe: Diogo P. de L. Carvalho, José D. A. Sales e Mayllon E. P. S. Silva
 
@@ -97,8 +97,8 @@ Nessa etapa, informamos as bibliotecas e módulos utilizados no desenvolvimento 
 </ul>
 
 ### Perspectivas Futuras
-* Deseja-se em um futuro próximo, realizar um estudo mais aprofundado sobre a composição de vidros a prova de bala e implementar o algoritmo para considerar mais propriedades importantes que influenciem nessa composição alvo.
-* Extrapolar o projeto para a melhoria não apenas de vidros a prova de bala, mas também para a melhoria de vidros utilizados em aeronaves, com o objetivo de minimização do peso e preço do composto.
+* Deseja-se em um futuro próximo, realizar um estudo mais aprofundado sobre a composição de vidros à prova de bala e implementar o algoritmo para considerar mais propriedades importantes que influenciem nessa composição alvo.
+* Extrapolar o projeto para a melhoria não apenas de vidros à prova de bala, mas também para a melhoria de vidros utilizados em aeronaves, com o objetivo de minimização do peso e preço do composto.
 
 ### References:
 [1] GlassPy documentation — GlassPy latest documentation. Disponível em: <https://glasspy.readthedocs.io/en/latest/>. Acesso em: 22 maio. 2024. <br>
