@@ -3,7 +3,7 @@
 ## Equipe: Diogo P. de L. Carvalho, José D. A. Sales e Mayllon E. P. S. Silva
 
 ### Introdução
-<p align="justify">Este repositório contém o projeto final do curso de Algoritmos Genéticos, que visa otimizar a formulação de vidros à prova de bala. Utilizando dados de uma base de dados contendo diversos compostos de formação de vidros, nosso objetivo é melhorar significativamente as propriedades de resistência balística do vidro enquanto mantemos os menores custos possíveis de produção. Este projeto combina a ciência dos materiais com técnicas avançadas de otimização baseada em algoritmos genéticos para encontrar soluções inovadoras e economicamente viáveis. Os dados dos compostos a serem trabalhados estão disponíveis no “Glasspy” [1], esse módulo por sua vez, não oferece as informações necessárias para trabalharmos com os preços dos compostos, para solucionar esse problema, utilizamos os preços do “Sigma Aldrich”[2], uma empresa referência no fornecimento de produtos para pesquisa científica</p>
+<p align="justify">Este repositório contém o projeto final do curso de Algoritmos Genéticos, que visa otimizar a formulação de vidros à prova de bala. Utilizando dados de uma base de dados contendo diversos compostos de formação de vidros, nosso objetivo é melhorar significativamente as propriedades de resistência balística do vidro enquanto mantemos os menores custos possíveis de produção. Este projeto combina a ciência dos materiais com técnicas avançadas de otimização baseada em algoritmos genéticos para encontrar soluções inovadoras e economicamente viáveis. Os dados dos compostos a serem trabalhados estão disponíveis no “Glasspy” [1], esse módulo por sua vez, não oferece as informações necessárias para trabalharmos com os preços dos compostos, para solucionar esse problema, utilizamos os preços do “Sigma Aldrich”[2], uma empresa referência no fornecimento de produtos para pesquisa científica.</p>
 
 ### Contexto
 <p align="justify">Vidros à prova de bala são materiais críticos em uma variedade de aplicações que vão desde a proteção de veículos até a segurança de instalações. A eficácia desses vidros depende de sua capacidade de absorver e dissipar a energia de impactos de alta velocidade, impedindo a penetração de projéteis. A resistência balística do vidro é fortemente influenciada pela sua composição química. Diferentes compostos e aditivos podem conferir ao vidro propriedades como maior dureza, resistência ao impacto, e tenacidade. Contudo, a introdução desses compostos pode aumentar substancialmente os custos de produção, tornando imperativo encontrar um equilíbrio entre desempenho e custo. O desenvolvimento de vidros à prova de bala envolve um complexo processo de experimentação e ajuste fino das formulações químicas. Tradicionalmente, esse processo pode ser caro e demorado. Aqui, entra a aplicação de algoritmos genéticos, que oferecem uma abordagem eficiente para explorar um vasto espaço de combinações de compostos e identificar aquelas que maximizam a resistência balística a um custo reduzido.</p>
@@ -59,7 +59,18 @@ Considerando que o objetivo principal e os dados (parte fundamental do projeto) 
 <p align="justify"> Em nosso projeto, objetivamos maximizar essas duas propriedades, porém, com a restrição da minimização do preço do composto, restringimos nossa busca a apenas os compostos óxidos e obtivemos um total de 196 composições. Para a busca de preços de cada composto contemplado no GlassPy, fizemos a coleta de preços em dólar (USD) por grama de cada composto de acordo com os valores do Sigma Aldrich. Os valores obtidos foram guardados em um dicionário com o intuito de serem usados posteriormente na execução do algoritmo genético. Importante ressaltar que em nossa busca nem todos os preços foram encontrados. Os valores faltantes então, foram posteriormente removidos do dicionário.</p>
   
   <li><b>Algoritmo Genético</b></li>
-  <p align="justify">Utilizando como base o algoritmo genético desenvolvido em sala de aula [7], alteramos o mesmo para que se adequasse ao nosso objetivo. Nossas alterações consistiram principalmente no arquivo de funções, onde foi implementado uma nova função para a etapa de cruzamento juntando os dois tipos de cruzamento vistos: ponto simples e ponto duplo. Alterações nas funções de mutação simples e mutação sucessiva também foram feitas. O fluxo de seleção, cruzamento, mutação e atualização do hall da fama (comum aos algoritmos genéticos) foi implementado nessa etapa do projeto. Para obter-se o resultado do preço do melhor individuo observado utilizou-se sua porcentagem no composto como um todo multiplicado por seu valor em dólares por grama. Dentre as principais alterações feitas com base no script de funções disponibilizado pelo professor, podem-se destacar a função de ativação, a etapa de cruzamento e a etapa de mutação. As alterações   </p>
+  <p align="justify">Utilizando como base o algoritmo genético desenvolvido em sala de aula [7], alteramos o mesmo para que se adequasse ao nosso objetivo. Nossas alterações consistiram principalmente no arquivo de funções, onde foi implementado uma nova função para a etapa de cruzamento juntando os dois tipos de cruzamento vistos: ponto simples e ponto duplo. Alterações nas funções de mutação simples e mutação sucessiva também foram feitas. O fluxo de seleção, cruzamento, mutação e atualização do hall da fama (comum aos algoritmos genéticos) foi implementado nessa etapa do projeto. Para obter-se o resultado do preço do melhor individuo observado utilizou-se sua porcentagem no composto como um todo multiplicado por seu valor em dólares por grama. Foi criado uma função objetivo para calcular a pontuação do candidato a partir de uma equação nova. Dentre as principais alterações feitas com base no script de funções disponibilizado pelo professor, podem-se destacar a função de ativação, a etapa de cruzamento e a etapa de mutação. </p>
+  <ul>
+    <li><b>Função objetivo</b></li>
+    <p align="justify">A função objetivo determina a pontuação do candidato a partir de uma equação inventada pelos colaboradores do projeto, em que o denominador envolve a raiz quadrado de um termo grande, havendo a soma do quadrado do complementar do módulo de young e do da microdureza do candidato normalizado pelo máximo absoluto somado ao quadrado 'do preço do candidato dividido pelo preço mínimo menos 1'. Nisso, o numerador representa a raiz cúbida do número de compostos não utilizados dos possíveis na composição. Veja a fórmula de forma mais clara:</p>
+  </ul>
+</ul>
+
+$$
+Score = \frac{\sqrt{(\frac{ModuloYoung}{ModuloYoung_{MAX}} - 1)^2 + (\frac{Microdureza}{Microdureza_{MAX}} - 1)^2 + (\frac{Preco}{Preco_{MIN}} - 1)^2}}{\sqrt[3]{NumeroCompostosNaoUtilizados + 1}}
+$$  
+
+<ul>
   <ul>
     <li><b>Função de ativação:</b></li>
     <p align="justify">A função cria um dicionário de composição a partir da lista de candidatos e usa um modelo preditivo para estimar as propriedades do vidro. A pontuação é calculada normalizando e combinando os desvios das propriedades e do custo em relação aos valores de referência, esses valores de referência são: No caso das propriedades com o objetivo de maximização (“Microdureza” e Módulo de Young), o valor máximo encontrado no conjunto de dados e no caso de minimização (Preço do composto) o valor mínimo encontrado, com penalização adicional para composições que utilizam poucos compostos ou apresentam valores de “microdureza” e módulo de Young fora de certos limites arbitrariamente estabelecidos. A menor pontuação indica uma melhor composição segundo os critérios estabelecidos. Logo, o fim último da evolução é a minimização da função objetivo.</p>
@@ -73,13 +84,15 @@ Considerando que o objetivo principal e os dados (parte fundamental do projeto) 
 Nessa etapa, informamos as bibliotecas e módulos utilizados no desenvolvimento do projeto e seu uso nesse projeto. Essas ferramentas vão desde a etapa da análise estatística e visualização dos dados até a otimização de funções no código fonte.
 
 <ul>
-  <li><b>Pandas</b>: Biblioteca utilizada para visualização dos dados brutos obtidos do SciGlass e Análise estatística dos mesmos.</li>
-  <li><b>Glasspy</b>: Módulo que serviu como intermediador entre o projeto e a base de dados alvo (SciGlass), além de ofercer acesso ao modelo preditivo do GlassNet</li>
-  <li><b>GlassNet</b>: Modelo preditivo (Rede Neural Multitask) utilzada para prever as propriedades do material com base na composição informada</li>
-  <li><b>SciGlass</b>: Base de dados contendo mais de 300 mil composições de materiais vítreos</li> 
-  <li><b>Matplotlib</b>: Biblioteca utilizada para o plot dos gráficos presentes no projeto (histogramas)</li>
-  <li><b>Numpy</b>: Biblioetca especializada em trabalhar com arrays multidimensionais e matrizes</li>
-  <li><b>Seaborn</b>: Biblioteca de visualização de dados construida com base no Matplotlib. Utilizada para estilização dos gráficos do projeto</li>
+  <li><b>Pandas</b>: Biblioteca utilizada para visualização dos dados brutos obtidos do SciGlass e Análise estatística dos mesmos;</li>
+  <li><b>Glasspy</b>: Módulo que serviu como intermediador entre o projeto e a base de dados alvo (SciGlass), além de ofercer acesso ao modelo preditivo do GlassNet;</li>
+  <ul>
+    <li><b>GlassNet</b>: Modelo preditivo (Rede Neural Multitask) utilzada para prever as propriedades do material com base na composição informada;</li>
+    <li><b>SciGlass</b>: Base de dados contendo mais de 300 mil composições de materiais vítreos.</li> 
+  </ul>ul>
+  <li><b>Matplotlib</b>: Biblioteca utilizada para o plot dos gráficos presentes no projeto (histogramas);</li>
+  <li><b>Numpy</b>: Biblioetca especializada em trabalhar com arrays multidimensionais e matrizes;</li>
+  <li><b>Seaborn</b>: Biblioteca de visualização de dados construida com base no Matplotlib. Utilizada para estilização dos gráficos do projeto;</li>
   
 </ul>
 
